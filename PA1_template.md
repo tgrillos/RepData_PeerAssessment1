@@ -21,12 +21,14 @@ differences in patterns across weekdays and weekends.
 
 ### 1. Code for reading in the dataset and processing the data
 
-```{r, warning=FALSE, message=FALSE}
+
+```r
 library(lubridate)
 library(dplyr)
 ```
 
-```{r load activity data}
+
+```r
 # download the data from the web
 fileURL <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 download.file(fileURL,destfile='data.zip')
@@ -41,41 +43,60 @@ activity$date <- ymd(activity$date)
 
 ### 2. Histogram of the Total Number of Steps taken each day
 
-```{r total steps per day}
+
+```r
 # calculate the total steps taken by date
 stepsperday <- tapply(activity$steps,activity$date,sum,na.rm=TRUE)
 # generate a histogram of the total daily steps
 hist(stepsperday, xlab="Total Daily Steps Taken", main="Histogram: Total Daily Steps (Missing Values Dropped)")
 ```
 
+![](PA1_template_files/figure-html/total steps per day-1.png)<!-- -->
+
 ### 3. The mean daily steps taken is ~9,354, while the median daily steps taken is 10,395.
 
-```{r mean and median steps per day}
+
+```r
 # calculate the mean and median daily steps and print them in a recognizable way
 paste(c("Mean:",mean(stepsperday,na.rm=TRUE))); paste(c("Median:",median(stepsperday,na.rm=TRUE)))
+```
+
+```
+## [1] "Mean:"            "9354.22950819672"
+```
+
+```
+## [1] "Median:" "10395"
 ```
 
 ## What is the average daily activity pattern?
 
 ### 4. Time Series Plot of the average number of steps taken
 
-```{r average steps per day}
+
+```r
 # calculate the mean steps by 5-minute time interval
 meansteps <- with(activity,tapply(steps,interval,mean,na.rm=TRUE))
 # create a corresponding vector of the 5-minute intervals
 mins <- unique(activity$interval)
 # generate a time series plot showing the mean steps across minutes of the day
 plot(mins, meansteps,type="l",ylab="Mean Steps Taken",xlab="5-Minute Interval") 
-
 ```
+
+![](PA1_template_files/figure-html/average steps per day-1.png)<!-- -->
 
 
 ### 5. The 5-minute interval that, on average, contains the maximum number of steps. 
 It is from 8:35-8:40am. 
 
-```{r interval with max steps}
+
+```r
 index <- which(meansteps==max(meansteps))
 mins[index]
+```
+
+```
+## [1] 835
 ```
 
 ## Imputing missing values
@@ -84,7 +105,8 @@ mins[index]
 My strategy for imputation was to replace all missing values with the median 
 value of steps taken during the 5-minute interval of the observation.
 
-```{r imputing missing data}
+
+```r
 #calculate the median steps for each interval 
 activity$median <- tapply(activity$steps,activity$interval,median,na.rm=TRUE)
 # generate a new variable that replaces all the missing steps data with median
@@ -100,18 +122,22 @@ activity <- activity[,-c(4,5)]
 Note that the median steps taken per interval is close to zero for many intervals.
 For this reason, the two histograms do not look very different.
 
-```{r new histogram}
+
+```r
 # re-calculate the total steps taken by date
 stepsperday2 <- tapply(activity$steps,activity$date,sum,na.rm=TRUE)
 # generate a new histogram of the total daily steps taken
 hist(stepsperday2, xlab="Total Daily Steps Taken", main="Histogram: Total Daily Steps (Missing Values Imputed)")
 ```
 
+![](PA1_template_files/figure-html/new histogram-1.png)<!-- -->
+
 ## Are there differences in activity patterns between weekdays and weekends?
 
 ### 8. Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends
 
-```{r weekday vs weekend}
+
+```r
 # load ggplot2 for graphics
 library(ggplot2)
 # create a new factor variable labelling observations as weekdays or weekends
@@ -127,6 +153,8 @@ g + facet_grid(weekend~.) + geom_line() + theme_bw(base_family="Times") +
     labs(x="5-Minute Interval", y="Average Steps") + theme(legend.position = "none") +
     theme(plot.title = element_text(face="bold", size=14, hjust=0.5))
 ```
+
+![](PA1_template_files/figure-html/weekday vs weekend-1.png)<!-- -->
 
 
 
