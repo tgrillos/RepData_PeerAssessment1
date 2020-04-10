@@ -3,8 +3,10 @@ title: "Reproducible Research - Project 1"
 output: 
   html_document: 
     keep_md: yes
-author: Tara Grillos
 ---
+
+Author: Tara Grillos <br>
+Date: April 10, 2020
 
 # Activity Data
 
@@ -51,7 +53,7 @@ stepsperday <- tapply(activity$steps,activity$date,sum,na.rm=TRUE)
 hist(stepsperday, xlab="Total Daily Steps Taken", main="Histogram: Total Daily Steps (Missing Values Dropped)")
 ```
 
-![](PA1_template_files/figure-html/total steps per day-1.png)<!-- -->
+![](PA1_template_files/figure-html/total_steps_per_day-1.png)<!-- -->
 
 ### 3. The mean daily steps taken is ~9,354, while the median daily steps taken is 10,395.
 
@@ -83,7 +85,7 @@ mins <- unique(activity$interval)
 plot(mins, meansteps,type="l",ylab="Mean Steps Taken",xlab="5-Minute Interval") 
 ```
 
-![](PA1_template_files/figure-html/average steps per day-1.png)<!-- -->
+![](PA1_template_files/figure-html/average_steps_per_day-1.png)<!-- -->
 
 
 ### 5. The 5-minute interval that, on average, contains the maximum number of steps. 
@@ -130,7 +132,7 @@ stepsperday2 <- tapply(activity$steps,activity$date,sum,na.rm=TRUE)
 hist(stepsperday2, xlab="Total Daily Steps Taken", main="Histogram: Total Daily Steps (Missing Values Imputed)")
 ```
 
-![](PA1_template_files/figure-html/new histogram-1.png)<!-- -->
+![](PA1_template_files/figure-html/new_histogram-1.png)<!-- -->
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -154,7 +156,7 @@ g + facet_grid(weekend~.) + geom_line() + theme_bw(base_family="Times") +
     theme(plot.title = element_text(face="bold", size=14, hjust=0.5))
 ```
 
-![](PA1_template_files/figure-html/weekday vs weekend-1.png)<!-- -->
+![](PA1_template_files/figure-html/weekday_vs_weekend-1.png)<!-- -->
 
 
 
